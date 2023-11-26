@@ -15,7 +15,7 @@ public class Musica {
     @Override
     public String toString() {
         return String.format(
-            "A musica se chama %s. A sua nota é %d.\n",
+            "A musica %s tem nota eh %d.\n",
             titulo, avaliacao
         );
     }

@@ -1,6 +1,8 @@
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import javax.swing.JOptionPane;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MusicaDAO {
@@ -37,9 +39,9 @@ public class MusicaDAO {
             ps.execute();  
         }
     }
-    public void listar() throws Exception{
+    public List<Musica> listar() throws Exception{
         //1 - Especificar o comando sql
-        String sql = " SELECT titulo, avaliacao FROM tb_musica;";
+        String sql = " SELECT titulo, avaliacao FROM tb_musica WHERE ativo = 1;";
         //2 - estabelecer uma conexao com o SGBD (PostgresSQL)
         try(
             var conexao = ConnectionFactory.conectar();
@@ -51,14 +53,16 @@ public class MusicaDAO {
                 ResultSet rs = ps.executeQuery();
             ){
                 //6 - Manipular os dados da tabela resultante
+                var musicas = new ArrayList<Musica>();
                 while(rs.next()){
                     int avaliacao = rs.getInt("avaliacao");
                     String titulo = rs.getString("titulo");
                     var musica = new Musica(titulo, avaliacao);
-                    JOptionPane.showMessageDialog(null, musica);
+                    musicas.add(musica);
+                    //JOptionPane.showMessageDialog(null, musica);
                 }
+                return musicas;
             }
-
         }
     }
     public void remover(Musica musica) throws Exception{
